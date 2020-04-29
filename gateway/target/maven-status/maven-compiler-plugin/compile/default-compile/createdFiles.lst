@@ -1,0 +1,5 @@
+com/example/gateway/User.class
+com/example/gateway/UserClient.class
+com/example/gateway/Application.class
+com/example/gateway/UserController.class
+com/example/gateway/Signed.class
