@@ -1,15 +1,11 @@
 package com.example.gateway;
 
-import com.netflix.ribbon.proxy.annotation.Http;
-import feign.HeaderMap;
-import feign.Headers;
-import feign.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path="/api")
@@ -20,8 +16,34 @@ public class UserController {
 
     // GET All Users
     @RequestMapping(path="/users", method = RequestMethod.GET)
-    public @ResponseBody Signed<List<User>> getAll() {
+    public @ResponseBody Signed<List<User>> getUsers()  throws CustomExceptionHandler{
         return userClient.getUsers();
+    }
+
+    // Create a new User
+    @RequestMapping(path="/users", method = RequestMethod.POST)
+    @ResponseBody Optional<User> createUser(@RequestBody User user) throws CustomExceptionHandler{
+        return userClient.createUser(user);
+    }
+
+    // Get a Single User
+    @RequestMapping(path="/users/{id}", method = RequestMethod.GET)
+    @ResponseBody Signed<User> getUserById(@PathVariable(value = "id") Long userId){
+        return userClient.getUserById(userId);
+    }
+
+    // Update a User
+    @RequestMapping(path="/users/{id}", method = RequestMethod.PUT)
+    @ResponseBody Signed<User> updateUser(@PathVariable(value = "id") Long userId,
+                                          @RequestBody User userDetails) throws CustomExceptionHandler{
+        return userClient.updateUser(userId,userDetails);
+    }
+
+
+    // Delete a User
+    @RequestMapping(path="/users/{id}", method = RequestMethod.DELETE)
+    @ResponseBody ResponseEntity<?> deleteUser(@PathVariable(value = "id") Long userId) throws CustomExceptionHandler{
+        return userClient.deleteUser(userId);
     }
 
 }

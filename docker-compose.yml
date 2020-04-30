@@ -1,7 +1,7 @@
 version: '3.7'
 services:
-  mysql:
-    hostname: mysql
+  docker-mysql:
+    hostname: docker-mysql
     image: mysql:5.7
     restart: always
     logging:
@@ -21,15 +21,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8761:8761"
-    depends_on:
-      - mysql
  
   gateway:
     hostname: gateway
     environment:
-      - EUREKA_SERVER=http://eurekaserver:8761/eureka
+      EUREKA_SERVER: http://server:8761/eureka
     build:
-      context: apigateway
+      context: gateway
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
@@ -39,12 +37,13 @@ services:
   client:
     hostname: client
     environment:
-      - EUREKA_SERVER=http://eurekaserver:8761/eureka
-      - MYSQL=mysql:3306
+      EUREKA_SERVER: http://server:8761/eureka
+      MYSQL: docker-mysql:3306
     build:
-     context: client
-     dockerfile: Dockerfile
+      context: client
+      dockerfile: Dockerfile
     ports:
      - "8081-8082:8081"
     depends_on:
-     - gateway
+     - server
+     - docker-mysql

@@ -14,19 +14,13 @@ public class CustomExceptionHandler extends Throwable implements ErrorController
 
 
     @ExceptionHandler(FeignException.BadRequest.class)
-    public Map<String, Object> handleFeignStatusException(FeignException e, HttpServletResponse response) {
+    public Map<String, Object> handleBadRequestException(FeignException e, HttpServletResponse response) {
         response.setStatus(e.status());
         return new JSONObject(e.contentUTF8()).toMap();
     }
 
     @ExceptionHandler(FeignException.NotFound.class)
-    public Map<String, Object> handleFeignStatusException2(FeignException e, HttpServletResponse response) {
-        response.setStatus(e.status());
-        return new JSONObject(e.contentUTF8()).toMap();
-    }
-
-    @ExceptionHandler()
-    public Map<String, Object> handleFeignStatusException3(FeignException e, HttpServletResponse response) {
+    public Map<String, Object> handleNotFoundException(FeignException e, HttpServletResponse response) {
         response.setStatus(e.status());
         return new JSONObject(e.contentUTF8()).toMap();
     }
