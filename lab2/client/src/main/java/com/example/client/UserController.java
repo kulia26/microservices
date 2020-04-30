@@ -1,10 +1,10 @@
 package com.example.client;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -14,6 +14,7 @@ public class UserController {
 
     final
     UserRepository userRepository;
+
     @Value("${eureka.instance.instanceId}")
     private String instanceId;
 
@@ -23,8 +24,7 @@ public class UserController {
 
     // Get All Users
     @GetMapping("/users")
-    public Signed<List<User>> getAllUsers(HttpServletResponse response) {
-        response.addHeader("instance-id", "26");
+    public Signed<List<User>> getAllUsers() {
         return new Signed<>(userRepository.findAll(), instanceId);
     }
 
