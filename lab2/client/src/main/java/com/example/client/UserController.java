@@ -14,7 +14,7 @@ public class UserController {
 
     final
     UserRepository userRepository;
-    @Value("${eureka.instance.instance-id}")
+    @Value("${eureka.instance.instanceId}")
     private String instanceId;
 
     public UserController(UserRepository userRepository) {
