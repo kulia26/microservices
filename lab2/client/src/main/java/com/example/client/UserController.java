@@ -44,7 +44,7 @@ public class UserController {
 
     // Update a User
     @PutMapping("/users/{id}")
-    public Signed<User> updateUser(@PathVariable(value = "id") Long userId,
+    public User updateUser(@PathVariable(value = "id") Long userId,
                            @Valid @RequestBody User userDetails) {
 
         User user = userRepository.findById(userId)
@@ -59,7 +59,7 @@ public class UserController {
         user.setPassword(userDetails.getPassword());
         user.setPhone(userDetails.getPhone());
 
-        return new Signed<User>(userRepository.save(user),null);
+        return userRepository.save(user);
     }
 
     // Delete a User

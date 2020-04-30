@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @FeignClient(value = "eureka-client")
 public interface UserClient {
@@ -16,7 +15,7 @@ public interface UserClient {
 
     // Create a new User
     @RequestMapping(path="/api/users", method = RequestMethod.POST)
-    @ResponseBody Optional<User> createUser(@RequestBody User user) throws CustomExceptionHandler;
+    @ResponseBody User createUser(@RequestBody User user) throws CustomExceptionHandler;
 
     // Get a Single User
     @RequestMapping(path="/api/users/{id}", method = RequestMethod.GET)
@@ -24,7 +23,7 @@ public interface UserClient {
 
     // Update a User
     @RequestMapping(path="/api/users/{id}", method = RequestMethod.PUT)
-    @ResponseBody Signed<User> updateUser(@PathVariable(value = "id") Long userId,
+    @ResponseBody User updateUser(@PathVariable(value = "id") Long userId,
                                            @RequestBody User userDetails) throws CustomExceptionHandler;
 
     // Delete a User

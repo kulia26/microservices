@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path="/api")
@@ -22,7 +21,7 @@ public class UserController {
 
     // Create a new User
     @RequestMapping(path="/users", method = RequestMethod.POST)
-    @ResponseBody Optional<User> createUser(@RequestBody User user) throws CustomExceptionHandler{
+    @ResponseBody User createUser(@RequestBody User user) throws CustomExceptionHandler{
         return userClient.createUser(user);
     }
 
@@ -34,7 +33,7 @@ public class UserController {
 
     // Update a User
     @RequestMapping(path="/users/{id}", method = RequestMethod.PUT)
-    @ResponseBody Signed<User> updateUser(@PathVariable(value = "id") Long userId,
+    @ResponseBody User updateUser(@PathVariable(value = "id") Long userId,
                                           @RequestBody User userDetails) throws CustomExceptionHandler{
         return userClient.updateUser(userId,userDetails);
     }
