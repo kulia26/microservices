@@ -1,0 +1,49 @@
+version: '3.7'
+services:
+  docker-mysql:
+    hostname: docker-mysql
+    image: mysql:5.7
+    restart: always
+    logging:
+      driver: none
+    environment:
+      MYSQL_DATABASE: 'user_app'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: '12345'
+      MYSQL_ROOT_PASSWORD: '12345'
+    ports:
+      - '3306:3306'
+
+  server:
+    hostname: server
+    build:
+      context: server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+ 
+  gateway:
+    hostname: gateway
+    environment:
+      EUREKA_SERVER: http://server:8761/eureka
+    build:
+      context: gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - server
+
+  client:
+    hostname: client
+    environment:
+      EUREKA_SERVER: http://server:8761/eureka
+      MYSQL: docker-mysql:3306
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+     - "8081-8082:8081"
+    depends_on:
+     - server
+     - docker-mysql

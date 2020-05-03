@@ -1,0 +1,11 @@
+{
+  "groups": [
+    {
+      "name": "eureka.instance",
+      "type": "com.example.client.AppId",
+      "sourceType": "com.example.client.AppId"
+    }
+  ],
+  "properties": [],
+  "hints": []
+}
