@@ -21,9 +21,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8761:8761"
+    depends_on:
+      - rabbit
 
   configserver:
     hostname: configserver
+    environment:
+      EUREKA_SERVER: http://server:8761/eureka
     build:
       context: configserver
       dockerfile: Dockerfile
@@ -34,11 +38,16 @@ services:
       - rabbit
 
   rabbit:
+    hostname: rabbit
     image: "rabbitmq:3"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "/"
     ports:
-      - "15672:15672"
       - "5672:5672"
- 
+      - "15672:15672"
+
   gateway:
     hostname: gateway
     environment:

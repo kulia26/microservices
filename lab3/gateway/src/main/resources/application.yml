@@ -3,6 +3,7 @@ spring:
     name: gateway
   cloud:
     config:
+      uri: http://configserver:8888
       discovery:
         enabled: true
         service-id: configserver
