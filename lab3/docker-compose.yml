@@ -21,6 +21,23 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8761:8761"
+
+  configserver:
+    hostname: configserver
+    build:
+      context: configserver
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    depends_on:
+      - server
+      - rabbit
+
+  rabbit:
+    image: "rabbitmq:3"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
  
   gateway:
     hostname: gateway
@@ -32,7 +49,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - server
+      - configserver
 
   client:
     hostname: client
@@ -45,5 +62,5 @@ services:
     ports:
      - "8081-8082:8081"
     depends_on:
-     - server
+     - configserver
      - docker-mysql

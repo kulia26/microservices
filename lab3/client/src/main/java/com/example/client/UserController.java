@@ -18,6 +18,9 @@ public class UserController {
     @Value("${eureka.instance.instanceId}")
     private String instanceId;
 
+//    @Value("${some.other.property}")
+//    private String someOtherProperty;
+
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

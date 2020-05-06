@@ -12,6 +12,9 @@ public class UserController {
 
     @Autowired
     UserClient userClient;
+//
+//    @Value("${some.other.property}")
+//    private String someOtherProperty;
 
     // GET All Users
     @RequestMapping(path="/users", method = RequestMethod.GET)
