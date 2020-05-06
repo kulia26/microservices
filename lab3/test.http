@@ -1,41 +1,71 @@
-
-### Create user
-POST http://localhost:8080/api/users
+### Api-gateway config
+GET http://localhost:8080/configs
 Content-type: application/json
 
 {
-    "name": "Name",
-    "surname": "Surname",
-    "phone": "+380111111111",
-    "country": "Ukraine",
-    "city": "Kyiv",
-    "password": "Secure123",
-    "email": "user.email@mail.com",
-    "birthday": "03.09.2019"
+    "property": "HelloWorld4458888888",
+    "value": "1"
 }
 
-### Update entity
-PUT http://localhost:8080/api/users/1
+### Service (instance 1) configs
+GET http://localhost:8081/configs
 Content-type: application/json
 
 {
-    "name": "NAME",
-    "surname": "SURNAME",
-    "phone": "+380111111111",
-    "country": "Ukraine",
-    "city": "Poltava",
-    "password": "Secure123",
-    "email": "user.email@mail.com",
-    "birthday": "03.09.2019"
+    "property": "HelloWorld50008888888",
+    "value": "HelloWorld60008888888888"
 }
 
-### Fetch entities
-GET http://localhost:8080/api/users
+### Service (instance 2) configs
+GET http://localhost:8082/configs
 Content-type: application/json
 
-### Fetch entity
-GET http://localhost:8080/api/users/1
+{
+    "property": "HelloWorld50008888888",
+    "value": "HelloWorld60008888888888"
+}
+
+### Gateway Config refresh
+POST http://localhost:8080/actuator/refresh
+
+### Client Config refresh
+POST http://localhost:8081/actuator/refresh
+
+### Bus refresh
+POST http://localhost:8080/actuator/bus-refresh
+
+### Gateway configs in config server
+GET http://localhost:8888/gateway/default
 Content-type: application/json
 
-### Delete entity
-DELETE http://localhost:8080/api/users/1
+{
+    "name": "gateway",
+    "profiles": [
+        "default"
+    ],
+    "label": null,
+    "version": "ec471ff5f393f9e73160ab5a28f8a78029dfdd3c",
+    "state": null,
+    "propertySources": [
+        {
+            "name": "file://config/gateway.properties",
+            "source": {
+                "some.value": "1"
+            }
+        },
+        {
+            "name": "file://config/application.properties",
+            "source": {
+                "management.endpoints.web.exposure.include": "bus-refresh,refresh,bus-env",
+                "spring.rabbitmq.host": "rabbit",
+                "spring.rabbitmq.port": "5672",
+                "spring.rabbitmq.username": "guest",
+                "spring.rabbitmq.password": "guest"
+            }
+        }
+    ]
+}
+
+### Client configs in config server
+GET http://localhost:8888/client/default
+Content-type: application/json
