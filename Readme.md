@@ -6,6 +6,7 @@
 
 ## Запуск
 ```
+git pull                                  // оновити репозиторій
 cd lab3                                   // перейти в директорію проекту
 sudo docker-compose up --scale client=2   // запустити за допомогою docker-compose
 ```
