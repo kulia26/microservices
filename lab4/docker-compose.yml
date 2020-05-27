@@ -1,0 +1,76 @@
+version: '3.7'
+services:
+  docker-mysql:
+    hostname: docker-mysql
+    image: mysql:5.7
+    restart: always
+    logging:
+      driver: none
+    environment:
+      MYSQL_DATABASE: 'user_app'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: '12345'
+      MYSQL_ROOT_PASSWORD: '12345'
+    ports:
+      - '3306:3306'
+
+  server:
+    hostname: server
+    build:
+      context: server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    depends_on:
+      - rabbit
+
+  configserver:
+    hostname: configserver
+    environment:
+      EUREKA_SERVER: http://server:8761/eureka
+    build:
+      context: configserver
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    depends_on:
+      - server
+      - rabbit
+
+  rabbit:
+    hostname: rabbit
+    image: "rabbitmq:3"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  gateway:
+    hostname: gateway
+    environment:
+      EUREKA_SERVER: http://server:8761/eureka
+    build:
+      context: gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - configserver
+
+  client:
+    hostname: client
+    environment:
+      EUREKA_SERVER: http://server:8761/eureka
+      MYSQL: docker-mysql:3306
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+     - "8081-8082:8081"
+    depends_on:
+     - configserver
+     - docker-mysql
+     - rabbit
