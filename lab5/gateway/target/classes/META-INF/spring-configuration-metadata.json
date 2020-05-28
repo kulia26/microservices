@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "some",
+      "type": "com.example.gateway.ConfigClientAppConfiguration",
+      "sourceType": "com.example.gateway.ConfigClientAppConfiguration"
+    }
+  ],
+  "properties": [
+    {
+      "name": "some.property",
+      "type": "java.lang.String",
+      "sourceType": "com.example.gateway.ConfigClientAppConfiguration"
+    },
+    {
+      "name": "some.value",
+      "type": "java.lang.String",
+      "sourceType": "com.example.gateway.ConfigClientAppConfiguration"
+    }
+  ],
+  "hints": []
+}

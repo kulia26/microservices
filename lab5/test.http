@@ -1,0 +1,41 @@
+### Fetch entities
+GET http://localhost:8080/api/users
+Content-type: application/json
+
+### Fetch entity
+GET http://localhost:8080/api/users/1
+Content-type: application/json
+
+### Delete entities
+DELETE http://localhost:8080/api/users/1
+Content-type: application/json
+
+### Create entity
+POST http://localhost:8080/api/users
+Content-type: application/json
+
+{
+    "name": "Name",
+    "surname": "Surname",
+    "phone": "+380111111111",
+    "country": "Ukraine",
+    "city": "Kyiv",
+    "password": "Secure123",
+    "email": "user.email@mail.com",
+    "birthday": "03.09.2019"
+}
+
+### Update entity
+PUT http://localhost:8080/api/users/1
+Content-type: application/json
+
+{
+    "name": "Name",
+    "surname": "Surname",
+    "phone": "+380111111111",
+    "country": "Ukraine",
+    "city": "Kyiv",
+    "password": "Secure123",
+    "email": "user.email@mail.com",
+    "birthday": "03.09.2019"
+}
