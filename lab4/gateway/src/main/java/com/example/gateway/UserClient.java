@@ -4,14 +4,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @FeignClient(value = "client")
 public interface UserClient {
 
     //get all users
     @RequestMapping(path="/api/users", method = RequestMethod.GET)
-    @ResponseBody Signed<List<User>> getUsers() throws CustomExceptionHandler;
+    @ResponseBody ResponseEntity<?> getUsers();
 
     // Create a new User
     @RequestMapping(path="/api/users", method = RequestMethod.POST)
@@ -19,7 +17,7 @@ public interface UserClient {
 
     // Get a Single User
     @RequestMapping(path="/api/users/{id}", method = RequestMethod.GET)
-    @ResponseBody Signed<User> getUserById(@PathVariable(value = "id") Long userId);
+    @ResponseBody ResponseEntity<?> getUserById(@PathVariable(value = "id") Long userId);
 
     // Update a User
     @RequestMapping(path="/api/users/{id}", method = RequestMethod.PUT)

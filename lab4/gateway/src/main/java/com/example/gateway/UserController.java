@@ -4,21 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(path="/api")
 public class UserController {
 
     @Autowired
-    UserClient userClient;
-//
-//    @Value("${some.other.property}")
-//    private String someOtherProperty;
+    ProxyService userClient;
 
     // GET All Users
     @RequestMapping(path="/users", method = RequestMethod.GET)
-    public @ResponseBody Signed<List<User>> getUsers()  throws CustomExceptionHandler{
+    @ResponseBody ResponseEntity<?> getUsers() {
         return userClient.getUsers();
     }
 
@@ -30,7 +25,7 @@ public class UserController {
 
     // Get a Single User
     @RequestMapping(path="/users/{id}", method = RequestMethod.GET)
-    @ResponseBody Signed<User> getUserById(@PathVariable(value = "id") Long userId){
+    @ResponseBody ResponseEntity<?> getUserById(@PathVariable(value = "id") Long userId){
         return userClient.getUserById(userId);
     }
 
@@ -40,7 +35,6 @@ public class UserController {
                                           @RequestBody User userDetails) throws CustomExceptionHandler{
         return userClient.updateUser(userId,userDetails);
     }
-
 
     // Delete a User
     @RequestMapping(path="/users/{id}", method = RequestMethod.DELETE)

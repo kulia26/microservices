@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
+public class ValidationException extends ResponseEntityExceptionHandler {
 
     // error handle for @Valid
     @Override
