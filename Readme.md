@@ -7,7 +7,7 @@
 ```
 git pull                                                            // оновити репозиторій
 cd lab5                                                             // перейти в директорію проекту
-udo docker-compose up --build --scale consumer=3 --scale client=2   // запустити за допомогою docker-compose
+sudo docker-compose up --build --scale consumer=3 --scale client=2   // запустити за допомогою docker-compose
 ```
 
  - Eureka Server URL: http://localhost:8761
