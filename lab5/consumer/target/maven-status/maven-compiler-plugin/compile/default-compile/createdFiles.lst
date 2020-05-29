@@ -1,0 +1,8 @@
+com/example/client/UserRepository.class
+com/example/client/UserController.class
+com/example/client/CustomRestExceptionHandler.class
+com/example/client/ResourceNotFoundException.class
+com/example/client/ApiErrors.class
+com/example/client/ClientApplication.class
+com/example/client/User.class
+com/example/client/Signed.class
