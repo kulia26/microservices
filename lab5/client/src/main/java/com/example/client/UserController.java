@@ -2,6 +2,7 @@ package com.example.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,10 @@ public class UserController {
 //    @Value("${some.other.property}")
 //    private String someOtherProperty;
 
+    @Autowired
+    KafkaProducerDemo kafkaProducer;
+
+
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -33,7 +38,8 @@ public class UserController {
 
     // Create a new User
     @PostMapping("/users")
-    public User createUser(@Valid @RequestBody User user){
+    public User createUser(@Valid @RequestBody User user) throws Throwable {
+        kafkaProducer.sendMessage("create.entity", user);
         return userRepository.save(user);
     }
 
@@ -48,8 +54,7 @@ public class UserController {
     // Update a User
     @PutMapping("/users/{id}")
     public User updateUser(@PathVariable(value = "id") Long userId,
-                           @Valid @RequestBody User userDetails) {
-
+                           @Valid @RequestBody User userDetails) throws Throwable {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
@@ -62,7 +67,9 @@ public class UserController {
         user.setPassword(userDetails.getPassword());
         user.setPhone(userDetails.getPhone());
 
+        kafkaProducer.sendMessage("update.entity", user);
         return userRepository.save(user);
+
     }
 
     // Delete a User

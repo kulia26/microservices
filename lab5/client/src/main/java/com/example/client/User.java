@@ -156,4 +156,9 @@ public class User implements Serializable {
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
+    public String toString(){
+        return new com.google.gson.Gson().toJson(this);
+    }
 }

@@ -2,16 +2,17 @@ package com.example.consumer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-@EnableDiscoveryClient
-@EnableJpaAuditing
-public class ClientApplication {
+public class ConsumerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ClientApplication.class, args);
+		SpringApplication.run(ConsumerApplication.class, args);
+		try {
+			KafkaConsumerDemo.runConsumer();
+		} catch(Exception e) {
+			System.out.println(e);
+		}
 	}
 
 }

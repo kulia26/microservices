@@ -29,6 +29,28 @@ services:
     network_mode: host
     ports:
       - "3000:3000"
+      
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    hostname: zookeeper
+    # network_mode: host
+
+  kafka:
+    image: wurstmeister/kafka
+    command: [start-kafka.sh]
+    # network_mode: host
+    ports:
+      - "9092:9092"
+    hostname: kafka
+    environment:
+      KAFKA_CREATE_TOPICS: "create.entity:3:1,update.entity:3:1" # docker-compose stop topic:partition:replicas
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_PORT: 9092
+    depends_on:
+      - "zookeeper"
 
   server:
     hostname: server
@@ -90,3 +112,12 @@ services:
      - configserver
      - docker-mysql
      - rabbit
+     - kafka
+
+  consumer:
+    hostname: consumer
+    build:
+      context: consumer
+      dockerfile: Dockerfile
+    depends_on:
+     - kafka

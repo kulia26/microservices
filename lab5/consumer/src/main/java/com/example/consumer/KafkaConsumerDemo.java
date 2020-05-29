@@ -1,39 +1,57 @@
 package com.example.consumer;
 
 
+import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.clients.producer.*;
+import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.LongSerializer;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 
 @Service
-public class KafkaProducerDemo {
-    private final static String BOOTSTRAP_SERVERS = "localhost:9092";
+public class KafkaConsumerDemo {
+    private final static String BOOTSTRAP_SERVERS = "kafka:9092";
 
-    private static Producer<Long, String> createProducer() {
-        Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        return new KafkaProducer<>(props);
+    private static Consumer<String, String> createConsumer() {
+        final Properties props = new Properties();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "KafkaExampleConsumer");
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class.getName());
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        // Create the consumer using props.
+        final Consumer<String, String> consumer =
+                new KafkaConsumer<>(props);
+
+        // Subscribe to the topic.
+        consumer.subscribe(Arrays.asList("create.entity", "update.entity"));
+        return consumer;
     }
 
-    public void sendMessage(String action, User user) throws Exception {
-        final Producer<Long, String> producer = createProducer();
+    public static void runConsumer() {
+        final Consumer<String, String> consumer = createConsumer();
+
         try {
-            final ProducerRecord<Long, String> record = new ProducerRecord<Long, String>(action,
-                    action + " " + user.toString());
+            while (true) {
+                ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(1));
 
-            RecordMetadata metadata = producer.send(record).get();
-            System.out.printf("sent record(key=%s value=%s) meta(partition=%d, offset=%d)",
-                    record.key(), record.value(), metadata.partition(), metadata.offset());
+                for (ConsumerRecord<String, String> record : records) {
+                    System.out.printf("\n\nConsumer Record:(%s, %s, %d, %d)\n",
+                            record.key(), record.value(),
+                            record.partition(), record.offset());
+                }
 
+                consumer.commitAsync();
+            }
         } finally {
-            producer.flush();
-            producer.close();
+            consumer.close();
         }
     }
 }
