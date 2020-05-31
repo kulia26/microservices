@@ -17,7 +17,7 @@ class Card extends React.Component {
     }
     deleteThisItem() {
       const item = this.props.item;
-      const url = 'http://localhost:8000/products/'+item.id;
+      const url = 'http://localhost:8080/products/'+item.id;
       let token = JSON.parse(sessionStorage.getItem('token'));
       if(token){
         console.log({token});
@@ -40,7 +40,7 @@ class Card extends React.Component {
 
      addToBasket() {
       const item = this.props.item;
-      const url = 'http://localhost:8000/orderItems';
+      const url = 'http://localhost:8080/orderItems';
       let token = JSON.parse(sessionStorage.getItem('token'));
       if(token){
         console.log({token});
@@ -103,7 +103,7 @@ class Card extends React.Component {
             <article className="col1 flex column">
                 <Link to={"/products/"+this.props.item.id}>
                     <div className="image">
-                        <img src={'http://localhost:8000/products/images/'+this.props.item.id} alt={this.props.title}></img>
+                        <img src={'http://localhost:8080/products/images/'+this.props.item.id} alt={this.props.title}></img>
                     </div>
                     <h3>{this.props.title}</h3>
                 </Link>

@@ -29,7 +29,7 @@ class Item extends React.Component {
     }
 
     componentDidMount() {
-      axios.get('http://localhost:8000/products/' + this.props.match.params.id )
+      axios.get('http://localhost:8080/products/' + this.props.match.params.id )
       .then(res => {
         this.setState({item: res.data});
       }).then(res=>res.json())
@@ -47,7 +47,7 @@ class Item extends React.Component {
                 <div className="col1 flex item">
 
                     <div className="image col2">
-                        <img src={'http://localhost:8000/products/images/'+this.state.item.id} alt={this.state.item.name || ''}></img>
+                        <img src={'http://localhost:8080/products/images/'+this.state.item.id} alt={this.state.item.name || ''}></img>
                     </div>
                     <div className="text col5">
                     <i>Категорія: {categories[this.state.item.category.name]|| ''}</i>

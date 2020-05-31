@@ -44,7 +44,7 @@ class Register extends React.Component {
 
 
    onSubmit(values) {
-    const url = 'http://localhost:8000/register';
+    const url = 'http://localhost:8080/register';
     const formData = new FormData();
     
     formData.append('image', this.state.image);
@@ -58,7 +58,7 @@ class Register extends React.Component {
         }
     }
     axios.post(url, formData, config)
-    //axios.post('http://localhost:8000/register', values)
+    //axios.post('http://localhost:8080/register', values)
     .then(res => {
       console.log({res});
       this.setState({ message : 'Реєстрація успішна, '+res.data.name+'\n Натисніть кнопку "увійти"'})

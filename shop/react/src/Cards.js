@@ -11,7 +11,6 @@ class Cards extends React.Component {
       title: props.title,
       user: props.user,
     };
-    this.componentDidMount = this.componentDidMount.bind(this);
     this.renderItems = this.renderItems.bind(this);
     this.someItemAreRemoved = this.someItemAreRemoved.bind(this);
     this.onEdit= this.onEdit.bind(this);   
@@ -29,7 +28,7 @@ componentDidMount() {
     'players'
   ];
     if(this.props.isSearch !== true){
-      axios.get('http://localhost:8000/products/')
+      axios.get('http://localhost:8080/product/')
       .then(res => {
         let items  = res.data;
         if(this.props.category){
@@ -45,7 +44,7 @@ componentDidMount() {
     }else{
       const query = window.location.pathname.split('/').pop();
       console.log(query);
-      axios.get('http://localhost:8000/findProducts/?query='+ encodeURI(query))
+      axios.get('http://localhost:8080/findProducts/?query='+ encodeURI(query))
       .then(res => {
         this.setState({items: res.data, title: "Результати пошуку за запитом: "+ query});
       })

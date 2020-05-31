@@ -61,7 +61,7 @@ class AddItem extends React.Component {
 
   onSubmit(values) {
 
-    const url = 'http://localhost:8000/products';
+    const url = 'http://localhost:8080/products';
     let token = JSON.parse(sessionStorage.getItem('token'));
       const formData = new FormData();
       console.log({values});

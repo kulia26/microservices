@@ -47,7 +47,7 @@ componentDidMount() {
   
   if(this.props.isAdmin){
     console.log('admin get all orderItems');
-    axios.get('http://localhost:8000/orderItems', config)
+    axios.get('http://localhost:8080/orderItems', config)
     .then(res => {
       this.setState({items: res.data});
     })
@@ -56,7 +56,7 @@ componentDidMount() {
     })
   }else{
     console.log('user get his orderItems');
-      axios.get('http://localhost:8000/users/'+this.state.user.phone+'/', config)
+      axios.get('http://localhost:8080/users/'+this.state.user.phone+'/', config)
       .then(res => {
         this.setState({items: res.data.orderItems});
       })

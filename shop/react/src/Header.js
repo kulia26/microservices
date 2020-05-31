@@ -40,7 +40,7 @@ class Header extends React.Component{
             )
         }else{
             const divStyle = {
-                backgroundImage: 'url(' + 'http://localhost:8000/users/images/'+this.props.phone+'/'+ ')'
+                backgroundImage: 'url(' + 'http://localhost:8080/users/images/'+this.props.phone+'/'+ ')'
             }
             if(this.props.imageUrl){
                 divStyle.backgroundImage = 'url('+this.props.imageUrl+ ')';

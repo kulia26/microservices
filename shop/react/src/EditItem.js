@@ -63,7 +63,7 @@ class EditItem extends React.Component {
   }
 
   onSubmit(values) {
-    const url = 'http://localhost:8000/products/'+this.state.item.id;
+    const url = 'http://localhost:8080/products/'+this.state.item.id;
     let token = JSON.parse(sessionStorage.getItem('token'));
     if(token){
       const formData = new FormData();

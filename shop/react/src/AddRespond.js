@@ -25,7 +25,7 @@ class AddRespond extends React.Component {
     this.fileChangedHandler = this.fileChangedHandler.bind(this);
   }
   onSubmit(values) {
-    const url = 'http://localhost:8000/addRespond/'+this.props.match.params.id;
+    const url = 'http://localhost:8080/addRespond/'+this.props.match.params.id;
     let token = JSON.parse(sessionStorage.getItem('token'));
     token = token ? token.tokenType+' '+ token.accessToken : '';
     if(token){

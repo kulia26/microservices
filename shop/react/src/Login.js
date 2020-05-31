@@ -25,7 +25,7 @@ class SocialLogin extends React.Component {
   render() {
       return (
           <div className="social-login">
-              <a className="btn btn-block social-btn github" href={'http://localhost:8000/oauth2/authorize/github?redirect_uri=http://localhost:3000/oauth2/redirect'}>
+              <a className="btn btn-block social-btn github" href={'http://localhost:8080/oauth2/authorize/github?redirect_uri=http://localhost:3000/oauth2/redirect'}>
                   {/* <img src={githubLogo} alt="Github" /> */}
                   <Button primary>Login with github.com</Button>
               </a> 
@@ -55,7 +55,7 @@ class Login extends React.Component {
               "Authorization" : token.tokenType+' '+ token.accessToken,
           }
         }
-          axios.get('http://localhost:8000/user/me', config)
+          axios.get('http://localhost:8080/user/me', config)
           .then((res) =>{
             sessionStorage.setItem('user', JSON.stringify(res.data));
             this.props.onLogIn();
@@ -68,13 +68,13 @@ class Login extends React.Component {
   onSubmit(values) {
     console.log(JSON.stringify(values))
     let state = {}
-    axios.post('http://localhost:8000/login', values)
+    axios.post('http://localhost:8080/login', values)
     .then((res) =>{
       state.message = "Вітаємо!";
       state.token = res.data;
       sessionStorage.setItem('token', JSON.stringify(res.data));
       if(state.token.accessToken){
-        axios.get('http://localhost:8000/users/' + values.phone +'/')
+        axios.get('http://localhost:8080/users/' + values.phone +'/')
         .then((res) =>{
           state.user = res.data;
           sessionStorage.setItem('user', JSON.stringify(res.data));
