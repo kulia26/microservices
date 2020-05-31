@@ -1,0 +1,152 @@
+### Fetch entities
+GET http://localhost:8080/product
+Content-type: application/json
+
+### Fetch entity
+GET http://localhost:8080/product/1
+Content-type: application/json
+
+### Fetch entity
+GET http://localhost:8080/product/filter/laptops
+Content-type: application/json
+
+### Create product
+POST http://localhost:8080/product
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrdWxpbmljaDI2MUBnbWFpbC5jb20iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImlhdCI6MTU5MDkyNDE3OSwiZXhwIjoxNTkwOTI3Nzc5fQ.1lpS8yT0fuTmUfAP6abE7kGsZbG_OAm-pMDQg7mI3UU
+
+{
+  "name": "macbook",
+  "price": "22000",
+  "type": "notebooks",
+  "rating": "1",
+  "description": "Awesome"
+}
+
+### Update entity
+PUT http://localhost:8080/product/1
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsImF1dGgiOiJST0xFX0FETUlOIiwiaWF0IjoxNTg5OTA1MDk0LCJleHAiOjE1ODk5MDg2OTR9.aGNBYKQ-SBkOD_EmZXa25K4BScTT5Riw99nGBMwyZmY
+
+{
+  "name": "macbook",
+  "price": "2000",
+  "type": "notebooks",
+  "rating": "10",
+  "description": "awesome"
+}
+
+### Delete entity
+DELETE http://localhost:8080/product/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrdWxpbmljaDI2MUBnbWFpbC5jb20iLCJhdXRoIjoiUk9MRV9BRE1JTiIsImlhdCI6MTU5MDkyNDE3OSwiZXhwIjoxNTkwOTI3Nzc5fQ.1lpS8yT0fuTmUfAP6abE7kGsZbG_OAm-pMDQg7mI3UU
+
+### Fetch entities
+GET http://localhost:8080/booking
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsImF1dGgiOiJST0xFX0FETUlOIiwiaWF0IjoxNTg5OTA1MDk0LCJleHAiOjE1ODk5MDg2OTR9.aGNBYKQ-SBkOD_EmZXa25K4BScTT5Riw99nGBMwyZmY
+
+### Fetch entity
+GET http://localhost:8080/booking/1
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbm5hQGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX0NMSUVOVCIsImlhdCI6MTU4OTkwNTQ3MCwiZXhwIjoxNTg5OTA5MDcwfQ.0knCsP3eKG4d3N15PBNWebCi8xEPPuEADrO-ubjQDuo
+
+### Fetch entity
+GET http://localhost:8080/booking/users/1
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbm5hQGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX0NMSUVOVCIsImlhdCI6MTU4OTkwNTQ3MCwiZXhwIjoxNTg5OTA5MDcwfQ.0knCsP3eKG4d3N15PBNWebCi8xEPPuEADrO-ubjQDuo
+
+### Fetch entity
+GET http://localhost:8080/booking/product/1
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbm5hQGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX0NMSUVOVCIsImlhdCI6MTU4OTkwNTQ3MCwiZXhwIjoxNTg5OTA5MDcwfQ.0knCsP3eKG4d3N15PBNWebCi8xEPPuEADrO-ubjQDuo
+
+### Create order
+POST http://localhost:8080/booking
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbm5hQGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX0NMSUVOVCIsImlhdCI6MTU4OTk4MjA3NywiZXhwIjoxNTg5OTg1Njc3fQ.6qFqFfjJp4rXqoZDfh14hr7w56VIiU6r2qXvXxF3Qi8
+
+{
+  "userId": "1",
+  "productId": "10",
+  "date": "05/07/2020 20:00:00"
+}
+
+### Delete entity
+DELETE http://localhost:8080/booking/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsImF1dGgiOiJST0xFX0FETUlOIiwiaWF0IjoxNTg5OTA1MDk0LCJleHAiOjE1ODk5MDg2OTR9.aGNBYKQ-SBkOD_EmZXa25K4BScTT5Riw99nGBMwyZmY
+
+### Fetch entities
+GET http://localhost:8080/feedback
+Content-type: application/json
+
+### Fetch entity
+GET http://localhost:8080/feedback/1
+Content-type: application/json
+
+### Fetch entity
+GET http://localhost:8080/feedback/booking/1
+Content-type: application/json
+
+### Fetch entity
+GET http://localhost:8080/feedback/product/1
+Content-type: application/json
+
+### Create ticket
+POST http://localhost:8080/feedback
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbm5hQGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX0NMSUVOVCIsImlhdCI6MTU4OTk4MjA3NywiZXhwIjoxNTg5OTg1Njc3fQ.6qFqFfjJp4rXqoZDfh14hr7w56VIiU6r2qXvXxF3Qi8
+
+{
+  "bookingId": "24",
+  "rating": "3",
+  "text": "Norm",
+  "date": "05/07/2020 20:00:00"
+}
+
+### Delete entity
+DELETE http://localhost:8080/feedback/1
+
+### Register admin
+POST http://localhost:8080/users/login
+Content-type: application/json
+
+{
+  "email": "kulinich261@gmail.com",
+  "password": "admin",
+  "name": "admin"
+}
+
+### Login admin
+POST http://localhost:8080/users/login
+Content-type: application/json
+
+{
+  "email": "kulinich261@gmail.com",
+  "password": "admin"
+}
+
+### Create user
+POST http://localhost:8080/users/register
+Content-type: application/json
+
+{
+  "name": "user",
+  "email": "user@gmail.com",
+  "password": "12345"
+}
+
+
+### Fetch entity
+GET http://localhost:8080/users
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsImF1dGgiOiJST0xFX0FETUlOIiwiaWF0IjoxNTg5OTE5NjI5LCJleHAiOjE1ODk5MjMyMjl9.zFMm1-MBB0OIRIqQuNyRjuCgUzPx-e5zB5yC0EWHFmU
+
+### Fetch entity
+GET http://localhost:8085/users/isAdmin
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsImF1dGgiOiJST0xFX0FETUlOIiwiaWF0IjoxNTg5OTA1MDk0LCJleHAiOjE1ODk5MDg2OTR9.aGNBYKQ-SBkOD_EmZXa25K4BScTT5Riw99nGBMwyZmY
+
+### Fetch entity
+GET http://localhost:8080/users/find/user@gmail.com
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBtYWlsLmNvbSIsImF1dGgiOiJST0xFX0FETUlOIiwiaWF0IjoxNTg5OTE5NjI5LCJleHAiOjE1ODk5MjMyMjl9.zFMm1-MBB0OIRIqQuNyRjuCgUzPx-e5zB5yC0EWHFmU
