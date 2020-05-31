@@ -3,7 +3,7 @@ services:
   mysql:
     hostname: mysql
     image: mysql:5.7
-    restart: always
+    # restart: always
     logging:
       driver: none
     environment:

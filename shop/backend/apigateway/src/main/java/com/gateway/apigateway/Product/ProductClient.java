@@ -19,7 +19,7 @@ public interface ProductClient {
 
     @RequestMapping(path="/product/find/{name}", method = RequestMethod.GET)
     public @ResponseBody
-    Product getIdByName(@PathVariable String name);
+    Iterable<Product> getIdByName(@PathVariable String name);
 
     @RequestMapping(path="/product/filter/{type}", method = RequestMethod.GET)
     public @ResponseBody Iterable<Product> getByFilter(@PathVariable String type);

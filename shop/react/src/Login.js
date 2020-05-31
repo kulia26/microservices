@@ -9,11 +9,11 @@ const axios = require('axios');
 
 const validateRecord = (values) => {
     var errors = {};
-    if (!values.phone ) {
-      errors.phone = "Пустий телефон";
+    if (!values.email ) {
+      errors.email = "Пуста пошта";
     }else{
-      if (!validator.isMobilePhone(values.phone)){
-        errors.phone = 'Неправильний телефон' 
+      if (!validator.isEmail(values.email)){
+        errors.email = 'Неправильна пошта' 
       }
     }
     if (!values.password || !validator.isAlphanumeric(values.password+'')) {
@@ -42,52 +42,41 @@ class Login extends React.Component {
       message: 'Введіть свої дані нижче', 
      };
     this.onSubmit = this.onSubmit.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   
  componentDidMount() {
-   if(!this.state.user){
-    let token = JSON.parse(sessionStorage.getItem('token'));
-      if(token) {
-        let config = {
-          headers: {
-              "Authorization" : token.tokenType+' '+ token.accessToken,
-          }
-        }
-          axios.get('http://localhost:8080/user/me', config)
-          .then((res) =>{
-            sessionStorage.setItem('user', JSON.stringify(res.data));
-            this.props.onLogIn();
-            this.setState({user: JSON.stringify(res.data) });
-          })
-      }
+   if(this.state.user){
+    this.props.onLogIn();
    }
 }
 
   onSubmit(values) {
     console.log(JSON.stringify(values))
     let state = {}
-    axios.post('http://localhost:8080/login', values)
+    axios.post('http://localhost:8080/users/login', values, {
+      headers: {
+          'Content-Type': 'application/json',
+      }
+  })
     .then((res) =>{
       state.message = "Вітаємо!";
+      console.log(res.data)
       state.token = res.data;
-      sessionStorage.setItem('token', JSON.stringify(res.data));
-      if(state.token.accessToken){
-        axios.get('http://localhost:8080/users/' + values.phone +'/')
-        .then((res) =>{
-          state.user = res.data;
-          sessionStorage.setItem('user', JSON.stringify(res.data));
-          this.props.onLogIn();
-          this.setState(state);
-        })   
-      }
+      sessionStorage.setItem('token', JSON.stringify(res.data.token));
+      state.user = res.data.user;
+      sessionStorage.setItem('user', JSON.stringify(res.data.user));
+      this.props.onLogIn();
+      this.setState(state);
     })
     .catch((err) =>{
-      state.message = err.response.data.message;
+      if(err.response){
+        state.message = err.response.data.message;
+      }
       this.setState(state);
+      
     });
-    this.setState(state);
+     this.setState(state);
     
   };
   render(){
@@ -111,11 +100,11 @@ class Login extends React.Component {
               return (
                 <>
                   <form onSubmit={props.handleSubmit} className="flex column">
-                    <Field name={`phone`}>
+                    <Field name={`email`}>
                       {({ input, meta }) => (
                         <>
-                          <label>Телефон</label>
-                          <input {...input} type="text" placeholder="Ваша телефон" />
+                          <label>Пошта</label>
+                          <input {...input} type="text" placeholder="Ваша пошта" />
                           <p className="error">{meta.error}</p>
                         </>
                       )}
@@ -135,7 +124,7 @@ class Login extends React.Component {
                       </button>
                     </div>
                   </form>
-                  <SocialLogin />
+                  {/* <SocialLogin /> */}
                 </>
                 )
             }}

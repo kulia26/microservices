@@ -7,8 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface ProductRepository extends CrudRepository<Product, Integer> {
-    @Query("SELECT u FROM Product u WHERE u.name = ?1")
-    Product findByName(String name);
+    @Query("SELECT u FROM Product u WHERE u.name LIKE %?1%")
+    Iterable<Product> findByName(String name);
     @Query("SELECT u FROM Product u WHERE u.id = ?1")
     Product find(Integer id);
     @Query("SELECT u FROM Product u WHERE u.type = ?1")

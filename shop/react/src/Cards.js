@@ -31,9 +31,11 @@ componentDidMount() {
       axios.get('http://localhost:8080/product/')
       .then(res => {
         let items  = res.data;
+        console.log(items);
         if(this.props.category){
            items = items.filter(item=>{
-             return (item.category.name === this.props.category)
+             console.log(item);
+             return (item.type === this.props.category)
            })
         }
         this.setState({items});
@@ -44,7 +46,7 @@ componentDidMount() {
     }else{
       const query = window.location.pathname.split('/').pop();
       console.log(query);
-      axios.get('http://localhost:8080/findProducts/?query='+ encodeURI(query))
+      axios.get('http://localhost:8080/product/find/'+ encodeURI(query))
       .then(res => {
         this.setState({items: res.data, title: "Результати пошуку за запитом: "+ query});
       })
@@ -52,9 +54,6 @@ componentDidMount() {
         this.setState({title: "Помилка "+ err.response.message});
       })
     }
-    
-  
-  
 }
 
 someItemAreRemoved(item){
@@ -64,7 +63,6 @@ someItemAreRemoved(item){
 onEdit(){
   this.props.onEdit();
 }
-
 
 renderItems(){
   let render = [];
@@ -79,7 +77,7 @@ renderItems(){
             image={el.image}
             title={el.name}
             description={el.description} 
-            cost={el.cost}
+            cost={el.price}
             canBuy={this.props.user?true:false}/>)  
     }
   return render;

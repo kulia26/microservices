@@ -16,20 +16,14 @@ class Item extends React.Component {
             image:'',
             name:'',
             description:'',
-            category: {
-              name: '',
-            },
+            type: '',
           }
         };
-        console.log(this.state.item.category.name)
-        this.componentDidMount = this.componentDidMount.bind(this);
-
-        this.render = this.render.bind(this);
-        
+        this.getAddRespond = this.getAddRespond.bind(this);
     }
 
     componentDidMount() {
-      axios.get('http://localhost:8080/products/' + this.props.match.params.id )
+      axios.get('http://localhost:8080/product/' + this.props.match.params.id )
       .then(res => {
         this.setState({item: res.data});
       }).then(res=>res.json())
@@ -37,7 +31,38 @@ class Item extends React.Component {
         this.setState({err:err.message})
       });
 
+      //GET feedback about product 
+
     }
+
+    getAddRespond() {
+      if(this.props.login){
+          return(
+              <>
+              <div className="buttons">
+                <div className="button">
+                <Link to={"/addRespond/"+this.props.match.params.id}>
+                 <button >Додати відгук</button>
+                 </Link>
+               </div>
+              </div>
+              </>
+            )
+      }
+  }
+
+  getResponds() {
+    if(this.state.item.feedback){
+      const feedback = this.state.item.feedback;
+     if(feedback && feedback.length){
+      return feedback.map(res =>{
+          return (<Respond text={res.text} image={res.image} name={res.name} ></Respond>)
+      })
+     }
+    }
+    
+  }
+
 
     render()
     {
@@ -47,16 +72,17 @@ class Item extends React.Component {
                 <div className="col1 flex item">
 
                     <div className="image col2">
-                        <img src={'http://localhost:8080/products/images/'+this.state.item.id} alt={this.state.item.name || ''}></img>
-                    </div>
+                        {/* category<img src={'http://localhost:8080/products/images/'+this.state.item.id} alt={this.state.item.name || ''}></img> */}
+                    
                     <div className="text col5">
-                    <i>Категорія: {categories[this.state.item.category.name]|| ''}</i>
+                    <i>Категорія: {categories[this.state.item.type]|| ''}</i>
                         <h3>{this.state.item.name || ''}</h3>
 
                         <i>{this.state.item.description || ''}</i>
                         
                     </div>
-
+                    </div>
+                    {this.getAddRespond()}
                 </div>
             </section>
             <div className="flex">
@@ -65,7 +91,7 @@ class Item extends React.Component {
                 </h1>
             </div>
             <section className="flex column">
-              
+            {this.getResponds()}
             </section>
            </>
 

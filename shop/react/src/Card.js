@@ -17,7 +17,7 @@ class Card extends React.Component {
     }
     deleteThisItem() {
       const item = this.props.item;
-      const url = 'http://localhost:8080/products/'+item.id;
+      const url = 'http://localhost:8080/product/'+item.id;
       let token = JSON.parse(sessionStorage.getItem('token'));
       if(token){
         console.log({token});
@@ -38,20 +38,30 @@ class Card extends React.Component {
       }
      }
 
+     getDateNow = () =>{
+      const date = new Date();
+      const day = date.getDate() > 9 ? date.getDate() : '0'+date.getDate();
+      const m = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0'+(date.getMonth()+1);
+      const time = date.toUTCString().slice(-12, -4)
+      return `${m}/${day}/${date.getFullYear()} ${time}`;
+     }
+
      addToBasket() {
       const item = this.props.item;
-      const url = 'http://localhost:8080/orderItems';
+      const url = 'http://localhost:8080/booking';
       let token = JSON.parse(sessionStorage.getItem('token'));
       if(token){
         console.log({token});
         const config = {
             headers: {
-               "Authorization" : token.tokenType+' '+token.accessToken,
+               "Authorization" : 'Bearer '+token,
             },  
         }
+        
         const orderItem = {
-          user:this.state.user,
-          product:item, 
+          userId:this.state.user.id,
+          productId:item.id, 
+          date: this.getDateNow()
         }
         axios
         .post(url, orderItem, config)
@@ -75,11 +85,11 @@ class Card extends React.Component {
             <>
             <div className="buttons">
               <div className="button">
-              <button onClick={this.deleteThisItem}><span >🗑️</span>Видалити</button>
+              <button onClick={this.deleteThisItem}><span role="img" aria-label="emoji">🗑️</span>Видалити</button>
               </div>
               <div className="button">
               <Link to="/edititem">
-               <button onClick={this.editThisItem}><span>✍️</span>Редагувати</button>
+               <button onClick={this.editThisItem}><span role="img" aria-label="emoji">✍️</span>Редагувати</button>
                </Link>
              </div>
             </div>       
@@ -103,9 +113,10 @@ class Card extends React.Component {
             <article className="col1 flex column">
                 <Link to={"/products/"+this.props.item.id}>
                     <div className="image">
-                        <img src={'http://localhost:8080/products/images/'+this.props.item.id} alt={this.props.title}></img>
-                    </div>
+                        {/* <img src={'http://localhost:8080/products/images/'+this.props.item.id} alt={this.props.title}></img> */}
+                    
                     <h3>{this.props.title}</h3>
+                    </div>
                 </Link>
                 <i>{this.props.description}</i>
                 <b>{this.props.cost}</b>

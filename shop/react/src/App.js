@@ -23,14 +23,13 @@ class App extends React.Component{
     super(props);
     let user = sessionStorage.getItem('user');
     user = user ? JSON.parse(user) : {
-      roles:[]
     };
     this.state = {
        login: user.name ? true: false,
        phone: user ? user.phone : '', 
-       isAdmin:  user.roles.length > 1 ? true : false,
+       isAdmin:  user.role === "ROLE_ADMIN" ? true : false,
        editing: false,
-       user: user.roles.length > 0 ? user : undefined,
+       user: user.role ? user : undefined,
     };
     this.logout  = this.logout.bind(this);
     this.login = this.login.bind(this);
@@ -58,13 +57,11 @@ class App extends React.Component{
 
   login(){
     let user = sessionStorage.getItem('user');
-    user = user ? JSON.parse(user) : {
-      roles:[]
-    };
+    user = user ? JSON.parse(user) : {};
       this.setState({
-        login: user.name ? true : false,
-        phone: user.phone,
-        isAdmin: user.roles.length > 1 ? true : false,
+        login: user.email ? true : false,
+        email: user.email,
+        isAdmin: user.role === 'ROLE_ADMIN' ? true : false,
         user: user,
         });
   }

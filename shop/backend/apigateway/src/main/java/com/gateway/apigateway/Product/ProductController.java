@@ -45,7 +45,7 @@ public class ProductController {
 
     @RequestMapping(path="/find/{name}", method = RequestMethod.GET)
     public @ResponseBody
-    Product getIdByName(@PathVariable String name) {
+    Iterable<Product> getIdByName(@PathVariable String name) {
         return client.getIdByName(name);
     }
 

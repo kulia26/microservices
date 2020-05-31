@@ -91,7 +91,7 @@ Content-type: application/json
 GET http://localhost:8080/feedback/product/1
 Content-type: application/json
 
-### Create ticket
+### Create feedback
 POST http://localhost:8080/feedback
 Content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbm5hQGdtYWlsLmNvbSIsImF1dGgiOiJST0xFX0NMSUVOVCIsImlhdCI6MTU4OTk4MjA3NywiZXhwIjoxNTg5OTg1Njc3fQ.6qFqFfjJp4rXqoZDfh14hr7w56VIiU6r2qXvXxF3Qi8
