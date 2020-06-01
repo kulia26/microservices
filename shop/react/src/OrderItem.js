@@ -10,15 +10,13 @@ class OrderItem extends React.Component {
         this.state = {
           item: this.props.el,
           user: user,
-          phone: '', 
+          email: '', 
           name: ''
         };
         this.deleteThisItem = this.deleteThisItem.bind(this);
         this.addToBasket = this.addToBasket.bind(this);
         this.setCompleted = this.setCompleted.bind(this);
         this.getDate = this.getDate.bind(this);
-        
-        this.componentDidMount = this.componentDidMount.bind(this);
     }
     deleteThisItem() {
       const item = this.props.item;
@@ -131,7 +129,7 @@ class OrderItem extends React.Component {
    }
 
    componentDidMount(){
-    const url = 'http://localhost:8080/orderItems/'+this.props.item.id+'/user';
+    const url = 'http://localhost:8080/booking/'+this.props.item.id;
       let token = JSON.parse(sessionStorage.getItem('token'));
       if(token){
         const config = {
@@ -142,7 +140,7 @@ class OrderItem extends React.Component {
         axios
         .get(url, config)
         .then((res) => {
-          this.setState({ phone : res.data.phone, name : res.data.name});
+          this.setState({ email : res.data.userId, name : res.data.name});
         })
         .catch(err => this.setState({ message :  err.response.message}));
       }

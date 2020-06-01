@@ -24,7 +24,7 @@ class Orders extends React.Component {
   }
 
 componentDidMount() {
-  if(this.state.user && this.state.user.phone){
+  if(this.state.user){
      console.log(this.state.user);
   const categories = [
     'laptops',
@@ -40,14 +40,14 @@ componentDidMount() {
   if(token){
     config = {
       headers: {
-          "Authorization" : token.tokenType+' '+ token.accessToken,
+        "Authorization" : 'Bearer '+token,
       }
     }
   }
   
   if(this.props.isAdmin){
     console.log('admin get all orderItems');
-    axios.get('http://localhost:8080/orderItems', config)
+    axios.get('http://localhost:8080/booking', config)
     .then(res => {
       this.setState({items: res.data});
     })
@@ -56,9 +56,10 @@ componentDidMount() {
     })
   }else{
     console.log('user get his orderItems');
-      axios.get('http://localhost:8080/users/'+this.state.user.phone+'/', config)
+      axios.get('http://localhost:8080/booking/users/'+this.state.user.id, config)
       .then(res => {
-        this.setState({items: res.data.orderItems});
+        console.log(res.data)
+        this.setState({items: res.data});
       })
       .catch(err=>{
         window.alert(err);

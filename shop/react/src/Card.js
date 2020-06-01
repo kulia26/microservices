@@ -55,6 +55,7 @@ class Card extends React.Component {
         const config = {
             headers: {
                "Authorization" : 'Bearer '+token,
+               "Content-Type":"application/json"
             },  
         }
         
@@ -66,9 +67,12 @@ class Card extends React.Component {
         axios
         .post(url, orderItem, config)
         .then((res) => {
-          this.setState({ message : res.data.message});
+           this.setState({ message : "Покупка успішна"});
         })
-        .catch(err => this.setState({ message :  err.response.message}));
+        .catch(err => {
+          this.setState({ message :  "Помилка під час покупки"})
+        }
+          );
       }else{
         window.alert('Ви не авторизовані !');
       }

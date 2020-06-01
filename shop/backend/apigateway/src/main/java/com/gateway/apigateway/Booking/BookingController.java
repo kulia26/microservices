@@ -22,8 +22,11 @@ public class BookingController {
 
     @RequestMapping(path="", method = RequestMethod.POST)
     public @ResponseBody Booking add(@RequestBody Booking booking,
-                                     @RequestHeader(value = "Authorization") String token) {
+                                     @RequestHeader(value = "Authorization") String token) throws CustomException  {
         userClient.isUser(token);
+        Booking b = client.add(booking);
+        b.setProduct(productClient.getById(b.getProductId()));
+        b.setUser(userClient.getById(b.getUserId()));
         return client.add(booking);
     }
 
@@ -32,7 +35,8 @@ public class BookingController {
         userClient.isAdmin(token);
         Iterable<Booking> bookings = client.getAll();
         for(Booking b: bookings) {
-            b.setEq(productClient.getById(b.getProductId()));
+            b.setProduct(productClient.getById(b.getProductId()));
+            b.setUser(userClient.getById(b.getUserId()));
         }
         return bookings;
     }
@@ -40,7 +44,8 @@ public class BookingController {
     @RequestMapping(path="/{id}", method = RequestMethod.GET)
     public @ResponseBody Booking getById(@PathVariable int id) throws CustomException {
         Booking booking = client.getById(id);
-        booking.setEq(productClient.getById(booking.getProductId()));
+        booking.setProduct(productClient.getById(booking.getProductId()));
+        booking.setUser(userClient.getById(booking.getUserId()));
         return client.getById(id);
     };
 
@@ -50,7 +55,8 @@ public class BookingController {
         userClient.isUser(token);
         Iterable<Booking> bookings = client.getUsersOrders(id);
         for(Booking b: bookings) {
-            b.setEq(productClient.getById(b.getProductId()));
+            b.setProduct(productClient.getById(b.getProductId()));
+            b.setUser(userClient.getById(b.getUserId()));
         }
         return bookings;
     }

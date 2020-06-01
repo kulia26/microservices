@@ -39,18 +39,18 @@ class Header extends React.Component{
                 </>
             )
         }else{
-            const divStyle = {
-                backgroundImage: 'url(' + 'http://localhost:8080/users/images/'+this.props.phone+'/'+ ')'
-            }
-            if(this.props.imageUrl){
-                divStyle.backgroundImage = 'url('+this.props.imageUrl+ ')';
+            // const divStyle = {
+            //     backgroundImage: 'url(' + 'http://localhost:8080/users/images/'+this.props.phone+'/'+ ')'
+            // }
+            // if(this.props.imageUrl){
+            //     divStyle.backgroundImage = 'url('+this.props.imageUrl+ ')';
                 
-            }
+            // }
             
             return(
                 <>
                 <div className="col1 center mb-hidden">
-                <div className="user-image" style={divStyle} >
+                <div className="user-image" >
                     
                 </div>
                     

@@ -1,6 +1,7 @@
 package com.gateway.apigateway.Booking;
 
 import com.gateway.apigateway.Product.Product;
+import com.gateway.apigateway.User.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,7 +12,8 @@ public class Booking {
     private Integer userId;
     private Integer productId;
     private Date date;
-    private Product p;
+    private Product product;
+    private User user;
 
     public Integer getId() {
         return id;
@@ -45,7 +47,15 @@ public class Booking {
         this.productId = productId;
     }
 
-    public Product getEq() { return p; }
+    public Product getProduct() { return this.product; }
 
-    public void setEq(Product p) { this.p = p; }
+    public void setProduct(Product product) { this.product = product; }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User u) {
+        this.user = u;
+    }
 }
