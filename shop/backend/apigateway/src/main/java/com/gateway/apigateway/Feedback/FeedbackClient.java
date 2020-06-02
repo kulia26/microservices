@@ -23,4 +23,7 @@ public interface FeedbackClient {
 
     @RequestMapping(path="/feedback/product/{id}", method = RequestMethod.DELETE)
     public @ResponseBody String deleteByProductId(@PathVariable Integer id) throws CustomException;
+
+    @RequestMapping(path="/feedback/product/{id}", method = RequestMethod.GET)
+    public @ResponseBody Iterable<Feedback> getByProductId(@PathVariable Integer id);
 }

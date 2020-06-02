@@ -28,10 +28,8 @@ class AddItem extends React.Component {
     this.state = {
       user: sessionStorage.getItem('user'),
       message: 'Додайте новий товар', 
-      image: '',
      };
     this.onSubmit = this.onSubmit.bind(this);
-    this.fileChangedHandler = this.fileChangedHandler.bind(this);
   }
   
   getCategories(){
@@ -54,27 +52,22 @@ class AddItem extends React.Component {
     return tags;            
   }
 
-  fileChangedHandler(event) {
-    let file = event.target.files[0];
-    this.setState({image: file});
-  }
-
   onSubmit(values) {
 
-    const url = 'http://localhost:8080/products';
+    const url = 'http://localhost:8080/product';
     let token = JSON.parse(sessionStorage.getItem('token'));
-      const formData = new FormData();
+      const formData = {};
       console.log({values});
-      formData.append('image', this.state.image);
-      formData.append('name', values.title);
-      formData.append('description', values.description);
-      formData.append('category', values.category);
-      formData.append('cost', values.cost);
-      token = token ? token.tokenType+' '+ token.accessToken : '';
+      formData.name = values.title;
+      formData.description = values.description;
+      formData.type = values.category;
+      formData.price = values.cost;
+      formData.rating = 1;
+
       const config = {
           headers: {
-              'content-type': 'multipart/form-data',
-              "Authorization" : token,
+            "Content-Type":"application/json",
+            "Authorization" : 'Bearer '+token,
           }
       }
       axios.post(url, formData,config)
@@ -133,15 +126,6 @@ class AddItem extends React.Component {
                     <Field name="category" component="select">
                           <option />
                           {this.getCategories()}
-                    </Field>
-                    <Field name={`image`}>
-                      {({ input, meta }) => (
-                        <>
-                            <label>Фотографія</label>
-                            <input {...input} onChange={this.fileChangedHandler} type="file" accept="image/jpeg"/ >
-                            <p className="error">{meta.error}</p>
-                        </>
-                      )}
                     </Field>
                     <div className="buttons">
                       <button type="submit" disabled={props.submitting || props.pristine}>

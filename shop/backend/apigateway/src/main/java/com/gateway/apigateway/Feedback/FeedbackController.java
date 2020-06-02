@@ -32,6 +32,7 @@ public class FeedbackController {
         Integer productId = bookingClient.getById(feedback.getBookingId()).getProductId();
         Product product = productClient.getById(productId);
         product.setRating((product.getRating() + feedback.getRating())/2);
+        feedback.setProductId(productId);
         productClient.update(productId, product);
         return client.add(feedback);
     }
@@ -51,10 +52,6 @@ public class FeedbackController {
         return client.getByOrderId(id);
     }
 
-    @RequestMapping(path = "/product/{id}", method = RequestMethod.GET)
-    public @ResponseBody Iterable<Feedback> getByProductId(@PathVariable Integer id) throws CustomException {
-        return client.getAll();
-    }
 
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(path="/{id}", method = RequestMethod.DELETE)
@@ -62,5 +59,10 @@ public class FeedbackController {
                                        @RequestHeader(value = "Authorization") String token) throws CustomException {
         userClient.isAdmin(token);
         return client.delete(id);
+    }
+
+    @RequestMapping(path="/product/{id}", method = RequestMethod.GET)
+    public @ResponseBody Iterable<Feedback> getByProductId(@PathVariable Integer id){
+        return client.getByProductId(id);
     }
 }

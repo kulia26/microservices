@@ -1,16 +1,7 @@
 import React from 'react';
-import { Form, Field } from 'react-final-form'
+import { Form, Field } from 'react-final-form';
+import validator from 'validator';
 const axios = require('axios');
-
-
-const validateRecord = (values) => {
-    var errors = {};
-    if (!values.title ) {
-      errors.text= "Пустий відгук";
-    }
-
-    return errors;
-}
 
 class AddRespond extends React.Component {
 
@@ -18,44 +9,61 @@ class AddRespond extends React.Component {
     super(props);
     this.state = {
       user: sessionStorage.getItem('user'),
-      message: '', 
-      image: '',
      };
     this.onSubmit = this.onSubmit.bind(this);
-    this.fileChangedHandler = this.fileChangedHandler.bind(this);
   }
+
+  getDateNow = () =>{
+    const date = new Date();
+    const day = date.getDate() > 9 ? date.getDate() : '0'+date.getDate();
+    const m = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0'+(date.getMonth()+1);
+    const time = date.toUTCString().slice(-12, -4)
+    return `${m}/${day}/${date.getFullYear()} ${time}`;
+   }
+
+   validateRecord = (values) => {
+    var errors = {};
+    if (!values.title ) {
+      errors.title= "Пустий відгук";
+    }
+
+    if (!values.rating ) {
+      errors.rating= "Пуста оцінка";
+    }
+    if (values.rating && (!validator.isAlphanumeric(values.rating+'') || values.rating > 10)) {
+      errors.rating= "Введіть корректрну оцінку 0-10";
+    }
+
+    return errors;
+}
+
   onSubmit(values) {
-    const url = 'http://localhost:8080/addRespond/'+this.props.match.params.id;
+    const url = 'http://localhost:8080/feedback';
     let token = JSON.parse(sessionStorage.getItem('token'));
-    token = token ? token.tokenType+' '+ token.accessToken : '';
     if(token){
-      const formData = new FormData();
-    
-      formData.append('text', values.title);
+      const formData = {};
+      formData.bookingId = this.props.match.params.id;
+      console.log(formData.bookingId);
+      formData.rating = values.rating;
+      formData.text = values.title;
+      formData.date = this.getDateNow();
+      console.log({formData});
       
       const config = {
           headers: {
-              'content-type': 'multipart/form-data',
-             "Authorization" : token,
+            "Content-Type":"application/json",
+            "Authorization" : 'Bearer '+token,
           }
       }
       axios.post(url, formData,config)
-      .then(res => this.setState({ message : res.data.message}))
+      .then(res => this.setState({ message : 'Відгук успішно додано'}))
       .catch(err => this.setState({ message :  err.message}));
     }else{
       window.alert('Ви не авторизовані !');
     }
     
   };
-  componentDidMount () {
-   
 
-  }
-
-  fileChangedHandler(event) {
-    let file = event.target.files[0];
-    this.setState({image: file});
-  }
 
   render(){
     return(
@@ -70,9 +78,9 @@ class AddRespond extends React.Component {
           <div>
             <Form
             onSubmit={this.onSubmit}
-            validate={validateRecord}
+            validate={this.validateRecord}
             validateOnBlur={false}
-            onChange={validateRecord}
+            onChange={this.validateRecord}
             render={(props) => {
               return (
                 <>
@@ -82,6 +90,15 @@ class AddRespond extends React.Component {
                         <>
                           <label>Текст</label>
                           <input {...input} type="text" placeholder="опис товару" />
+                          <p className="error">{meta.error}</p>
+                        </>
+                      )}
+                    </Field>
+                    <Field name={`rating`}>
+                      {({ input, meta }) => (
+                        <>
+                          <label>Оцінка</label>
+                          <input {...input} type="text" placeholder="оцінка" />
                           <p className="error">{meta.error}</p>
                         </>
                       )}

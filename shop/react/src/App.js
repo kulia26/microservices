@@ -49,7 +49,6 @@ class App extends React.Component{
   }
 
   disable(){
-    sessionStorage.removeItem('editing');
     this.setState({
       editing: false,
     });
@@ -99,7 +98,7 @@ class App extends React.Component{
                   <Route path="/orders" render={() => <Orders user={this.state.user} isAdmin={this.state.isAdmin}/>} />
                   <Route path="/register" component={Register} />
                   <Route path="/additem" component={AddItem} />
-                  <Route path="/edititem" render={() => <EditItem onDisable={this.disable}/>}/>
+                  <Route path="/edititem/:id" render={(props) => <EditItem {...props} onDisable={this.disable}/>}/>
                   <Route path="/products/:id" render={(props) => <Item login={this.state.login} {...props}/>}/>
                   <Route path="/addRespond/:id" render={(props) => <AddRespond  {...props} />}/>
                   <Route exact path="/login" render={() => <Login onLogIn={this.login} />}/>
@@ -108,7 +107,7 @@ class App extends React.Component{
                 </Switch>
               </div>
         </div>
-        <Footer />
+        <Footer isAdmin={this.state.isAdmin}/>
       </div>
       </Router>
     );

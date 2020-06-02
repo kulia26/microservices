@@ -27,7 +27,7 @@ public class BookingController {
         Booking b = client.add(booking);
         b.setProduct(productClient.getById(b.getProductId()));
         b.setUser(userClient.getById(b.getUserId()));
-        return client.add(booking);
+        return b;
     }
 
     @RequestMapping(path="", method = RequestMethod.GET)
@@ -46,7 +46,7 @@ public class BookingController {
         Booking booking = client.getById(id);
         booking.setProduct(productClient.getById(booking.getProductId()));
         booking.setUser(userClient.getById(booking.getUserId()));
-        return client.getById(id);
+        return booking;
     };
 
     @RequestMapping(path = "/users/{id}", method = RequestMethod.GET)

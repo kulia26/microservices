@@ -17,9 +17,10 @@ class Item extends React.Component {
             name:'',
             description:'',
             type: '',
+            feedback: [],
           }
         };
-        this.getAddRespond = this.getAddRespond.bind(this);
+       
     }
 
     componentDidMount() {
@@ -31,33 +32,27 @@ class Item extends React.Component {
         this.setState({err:err.message})
       });
 
-      //GET feedback about product 
+      axios.get('http://localhost:8080/feedback/product/' + this.props.match.params.id )
+      .then(res => {
+        this.setState({feedback: res.data});
+      }).then(res=>res.json())
+      .catch((err, res)=>{
+        this.setState({err:err.message})
+      });
 
     }
 
-    getAddRespond() {
-      if(this.props.login){
-          return(
-              <>
-              <div className="buttons">
-                <div className="button">
-                <Link to={"/addRespond/"+this.props.match.params.id}>
-                 <button >Додати відгук</button>
-                 </Link>
-               </div>
-              </div>
-              </>
-            )
-      }
-  }
+    
 
   getResponds() {
-    if(this.state.item.feedback){
-      const feedback = this.state.item.feedback;
+    if(this.state.feedback){
+      const feedback = this.state.feedback;
      if(feedback && feedback.length){
-      return feedback.map(res =>{
-          return (<Respond text={res.text} image={res.image} name={res.name} ></Respond>)
+      return feedback.map(f =>{
+          return (<Respond product={this.state.item} key={f.id} feedback={f} ></Respond>)
       })
+     }else{
+      return (<p>Відгуків про товар не має</p>)
      }
     }
     
@@ -72,17 +67,18 @@ class Item extends React.Component {
                 <div className="col1 flex item">
 
                     <div className="image col2">
-                        {/* category<img src={'http://localhost:8080/products/images/'+this.state.item.id} alt={this.state.item.name || ''}></img> */}
-                    
+                    <img src={`../assets/${this.state.item.type}.png`} alt={this.state.item.name}></img>
+                    </div>
                     <div className="text col5">
                     <i>Категорія: {categories[this.state.item.type]|| ''}</i>
                         <h3>{this.state.item.name || ''}</h3>
 
                         <i>{this.state.item.description || ''}</i>
+                        Рейтинг: <mark>{this.state.item.rating || ''}</mark>
                         
                     </div>
-                    </div>
-                    {this.getAddRespond()}
+                    
+                    
                 </div>
             </section>
             <div className="flex">

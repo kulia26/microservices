@@ -23,7 +23,7 @@ class Card extends React.Component {
         console.log({token});
         const config = {
             headers: {
-               "Authorization" : token.tokenType+' '+token.accessToken,
+               "Authorization" : 'Bearer '+token,
             },  
         }
         axios
@@ -79,7 +79,6 @@ class Card extends React.Component {
      }
 
      editThisItem() {
-      sessionStorage.setItem('editing', JSON.stringify(this.props.item));
       this.props.onEdit();
      }
 
@@ -92,7 +91,7 @@ class Card extends React.Component {
               <button onClick={this.deleteThisItem}><span role="img" aria-label="emoji">🗑️</span>Видалити</button>
               </div>
               <div className="button">
-              <Link to="/edititem">
+              <Link to={"/edititem/"+this.props.item.id}>
                <button onClick={this.editThisItem}><span role="img" aria-label="emoji">✍️</span>Редагувати</button>
                </Link>
              </div>
@@ -117,14 +116,16 @@ class Card extends React.Component {
             <article className="col1 flex column">
                 <Link to={"/products/"+this.props.item.id}>
                     <div className="image">
-                        {/* <img src={'http://localhost:8080/products/images/'+this.props.item.id} alt={this.props.title}></img> */}
+                        <img src={`./assets/${this.props.item.type}.png`} alt={this.props.title}></img>
                     
                     <h3>{this.props.title}</h3>
                     </div>
                 </Link>
                 <i>{this.props.description}</i>
-                <b>{this.props.cost}</b>
+                <i>Рейтинг: <mark>{this.props.item.rating}</mark></i>
+                <i>{this.props.cost}$</i>
                 <br></br>
+                
                 {this.getAdminButtons()}
                 <div className="button">
                   {this.renderMakeOrder()}

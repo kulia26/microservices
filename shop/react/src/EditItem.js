@@ -33,16 +33,23 @@ class EditItem extends React.Component {
 
   constructor(props) {
     super(props);
-    const item = sessionStorage.getItem('editing');
     this.state = {
-      item: item ? JSON.parse(item): undefined,
-     };
+      message: "",
+      item: {
+
+      }
+    }
     this.onSubmit = this.onSubmit.bind(this);
-    this.fileChangedHandler = this.fileChangedHandler.bind(this);
   }
 
   componentDidMount(){
-    validateRecord();
+   axios.get('http://localhost:8080/product/' + this.props.match.params.id )
+      .then(res => {
+        this.setState({item: res.data});
+      }).then(res=>res.json())
+      .catch((err, res)=>{
+        this.setState({err:err.message})
+      });
   }
   
   getCategories(){
@@ -57,31 +64,28 @@ class EditItem extends React.Component {
     return tags;            
   }
 
-  fileChangedHandler(event) {
-    let file = event.target.files[0];
-    this.setState({image: file});
-  }
 
   onSubmit(values) {
-    const url = 'http://localhost:8080/products/'+this.state.item.id;
+    const url = 'http://localhost:8080/product/'+this.state.item.id;
     let token = JSON.parse(sessionStorage.getItem('token'));
     if(token){
-      const formData = new FormData();
-    
-      formData.append('image', this.state.image);
-      formData.append('name', values.title);
-      formData.append('description', values.description);
-      formData.append('category', values.category.name);
-      formData.append('cost', values.cost);
+      const formData = {};
+      
+      formData.name= values.title;
+      formData.description= values.description;
+      formData.type= values.category;
+      formData.price= values.cost;
+      formData.rating = values.rating;
+      
       console.log({values});
       const config = {
           headers: {
-              'content-type': 'multipart/form-data',
-              "Authorization" : token.tokenType+' '+ token.accessToken,
+              "Content-Type":"application/json",
+              "Authorization" : 'Bearer '+token,
           }
       }
       axios.put(url, formData, config)
-      .then(res => this.setState({ message : res.data.message}))
+      .then(res => this.setState({ message : 'Товар оновлено'}))
       .catch(err => this.setState({ message :  err.message}));
     }else{
       window.alert('Ви не авторизовані !');
@@ -126,7 +130,7 @@ class EditItem extends React.Component {
                         </>
                       )}
                     </Field>
-                    <Field name={`cost`}  defaultValue={this.state.item.cost}>
+                    <Field name={`cost`}  defaultValue={this.state.item.price}>
                       {({ input, meta }) => (
                         <>
                           <label>Ціна</label>
@@ -135,18 +139,19 @@ class EditItem extends React.Component {
                         </>
                       )}
                     </Field>
-                    <label>Категорія</label>
-                    <Field name="category" component="select"  defaultValue={this.state.item.category}>
-                          {this.getCategories()}
-                    </Field>
-                    <Field name={`image`}>
+
+                    <Field name={`rating`}  defaultValue={this.state.item.rating}>
                       {({ input, meta }) => (
                         <>
-                            <label>Фотографія</label>
-                            <input {...input}  onChange={this.fileChangedHandler} type="file"/ >
-                            <p className="error">{meta.error}</p>
+                          <label>Рейтинг</label>
+                          <input {...input} type="text" placeholder="рейтинг" />
+                          <p className="error">{meta.error}</p>
                         </>
                       )}
+                    </Field>
+                    <label>Категорія</label>
+                    <Field name="category" component="select"  defaultValue={this.state.item.type}>
+                          {this.getCategories()}
                     </Field>
                     <div className="buttons">
                       <button type="submit" disabled={props.submitting || props.pristine}>

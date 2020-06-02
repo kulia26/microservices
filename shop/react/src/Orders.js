@@ -90,7 +90,7 @@ renderBasketItems(){
           title={el.product.name}
           time={el.createdAt}
           description={el.product.description} 
-          cost={el.product.cost}></OrderItem>)  
+          cost={el.product.price}></OrderItem>)  
       }    
     }
   }
@@ -127,12 +127,7 @@ render()
     <section className="flex">
     {this.renderBasketItems()}
     </section>
-    <div className="flex">
-      <h1>Минулі замовлення</h1>
-    </div>
-    <section className="flex">
-    {this.renderOrderItems()}
-    </section>
+
     </>
   );}
 }

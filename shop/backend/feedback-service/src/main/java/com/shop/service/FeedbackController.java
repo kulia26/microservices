@@ -13,6 +13,7 @@ public class FeedbackController {
 
     @RequestMapping(path="", method = RequestMethod.POST)
     public @ResponseBody Feedback add(@RequestBody Feedback feedback) {
+        
         repository.save(feedback);
         return feedback;
     }
@@ -40,8 +41,13 @@ public class FeedbackController {
     }
 
     @RequestMapping(path="/product/{id}", method = RequestMethod.DELETE)
-    public @ResponseBody String deleteByProductId(@PathVariable Integer id) throws CustomException {
+    public @ResponseBody String deleteByProductId(@PathVariable Integer id){
         repository.deleteByProductId(id);
         return "Deleted";
+    }
+
+    @RequestMapping(path="/product/{id}", method = RequestMethod.GET)
+    public @ResponseBody Iterable<Feedback> getByProductId(@PathVariable Integer id){
+        return repository.getByProductId(id);
     }
 }

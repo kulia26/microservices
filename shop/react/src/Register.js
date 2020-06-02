@@ -7,15 +7,12 @@ const axios = require('axios');
 
 const validateRecord = ( values) => {
     var errors = {};
-    if (!values.phone ) {
-      errors.phone = "Пустий телефон";
+    if (!values.email ) {
+      errors.email = "Пустий email";
     }else{
-      if (!validator.isMobilePhone(values.phone)){
-        errors.phone = 'Неправильний телефон' 
+      if (!validator.isEmail(values.email)){
+        errors.email = 'Неправильний email' 
       }
-    }
-    if (!values.image) {
-      //errors.logo = "Завантажте фото";
     }
     if (!values.name || !validator.isAlphanumeric(values.name+'') || values.length < 5) {
       errors.name = "Ім'я може містити тільки A-z0-9";
@@ -32,36 +29,27 @@ class Register extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {message: 'Введіть свої дані нижче', image : ''};
+    this.state = {message: 'Введіть свої дані нижче'};
     this.onSubmit = this.onSubmit.bind(this);
-    this.fileChangedHandler = this.fileChangedHandler.bind(this);
   }
   
-  fileChangedHandler(event) {
-    let file = event.target.files[0];
-    this.setState({image: file});
-  }
-
 
    onSubmit(values) {
-    const url = 'http://localhost:8080/register';
-    const formData = new FormData();
-    
-    formData.append('image', this.state.image);
-    formData.append('name', values.name);
-    formData.append('phone', values.phone);
-    formData.append('password', values.password);
+    const url = 'http://localhost:8080/users/register';
+    const formData = {};
+    formData.name = values.name;
+    formData.email = values.email;
+    formData.password = values.password;
     
     const config = {
         headers: {
-            'content-type': 'multipart/form-data'
+            "Content-Type":"application/json"
         }
     }
     axios.post(url, formData, config)
-    //axios.post('http://localhost:8080/register', values)
     .then(res => {
       console.log({res});
-      this.setState({ message : 'Реєстрація успішна, '+res.data.name+'\n Натисніть кнопку "увійти"'})
+      this.setState({ message : 'Реєстрація успішна, '+res.data.user.name+'\n Натисніть кнопку "увійти"'})
       
     })
     .catch(err => {
@@ -100,11 +88,11 @@ class Register extends React.Component {
                         </>
                       )}
                     </Field>
-                    <Field name={`phone`}>
+                    <Field name={`email`}>
                       {({ input, meta }) => (
                         <>
-                          <label>Телефон</label>
-                          <input {...input} type="text" placeholder="Ваш телефон" />
+                          <label>Email</label>
+                          <input {...input} type="text" placeholder="Ваш email" />
                           <p className="error">{meta.error}</p>
                         </>
                       )}
@@ -118,16 +106,7 @@ class Register extends React.Component {
                         </>
                       )}
                     </Field>
-                    
-                    <Field name={`image`}>
-                      {({ input, meta }) => (
-                        <>
-                            <label>Фотографія</label>
-                            <input {...input} onChange={this.fileChangedHandler} type="file" accept="image/jpeg"/ >
-                            <p className="error">{meta.error}</p>
-                        </>
-                      )}
-                    </Field>
+
                     <div className="buttons">
                       <button type="submit" disabled={props.submitting || props.pristine}>
                         Зареєструватися

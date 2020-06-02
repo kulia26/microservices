@@ -78,7 +78,7 @@ renderItems(){
             title={el.name}
             description={el.description} 
             cost={el.price}
-            canBuy={this.props.user.role === "ROLE_USER"?true:false}/>)  
+            canBuy={this.props.user && this.props.user.role === "ROLE_USER"?true:false}/>)  
     }
   return render;
 }

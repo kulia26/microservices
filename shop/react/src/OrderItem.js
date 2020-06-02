@@ -14,18 +14,35 @@ class OrderItem extends React.Component {
           name: ''
         };
         this.deleteThisItem = this.deleteThisItem.bind(this);
-        this.addToBasket = this.addToBasket.bind(this);
-        this.setCompleted = this.setCompleted.bind(this);
         this.getDate = this.getDate.bind(this);
+        this.getAddRespond = this.getAddRespond.bind(this);
     }
+
+    getAddRespond() {
+      if(!this.props.isAdmin){
+          return(
+              <>
+              <div className="buttons">
+                <div className="button">
+                <Link to={"/addRespond/"+this.props.item.id}>
+                 <button >Додати відгук</button>
+                 </Link>
+               </div>
+              </div>
+              </>
+            )
+      }
+  }
+
     deleteThisItem() {
       const item = this.props.item;
-      const url = 'http://localhost:8080/orderItems/'+item.id;
+      const url = 'http://localhost:8080/booking/'+item.id;
       let token = JSON.parse(sessionStorage.getItem('token'));
       if(token){
         const config = {
             headers: {
-               "Authorization" : token.tokenType+' '+token.accessToken,
+               "Authorization" : 'Bearer '+token,
+               "Content-Type":"application/json"
             },  
         }
         axios
@@ -40,58 +57,11 @@ class OrderItem extends React.Component {
       }
      }
 
-     setCompleted() {
-      const item = this.props.item;
-      const url = 'http://localhost:8080/orderItems/'+item.id;
-      let token = JSON.parse(sessionStorage.getItem('token'));
-      if(token){
-        const config = {
-            headers: {
-               "Authorization" : token.tokenType+' '+token.accessToken,
-            },  
-        }
-        item.isCompleted = true;
-        item.completed = true;
-        item.user = this.props.user;
-        axios
-        .put(url, item, config)
-        .then((res) => {
-          this.setState({ message : res.data.message});
-          this.props.onDelete(item);
-        })
-        .catch(err => this.setState({ message :  err.response.data.message}));
-      }else{
-        window.alert('Ви не авторизовані !');
-      }
-     }
-
-     addToBasket() {
-      const item = this.props.item;
-      const url = 'http://localhost:8080/orderItems';
-      let token = JSON.parse(sessionStorage.getItem('token'));
-      if(token){
-        const config = {
-            headers: {
-               "Authorization" : token.tokenType+' '+token.accessToken,
-            },  
-        }
-        const orderItem = {
-          user:this.state.user,
-          product:item, 
-        }
-        axios
-        .post(url, orderItem, config)
-        .then((res) => {
-          this.setState({ message : res.data.message});
-        })
-        .catch(err => this.setState({ message :  err.response.message}));
-      }else{
-        window.alert('Ви не авторизовані !');
-      }
-     }
+     
 
     getDeleteButton() {
-        if(!this.props.item.isCompleted || this.props.isAdmin){
+
+        if( this.props.isAdmin){
           return(
             <>
             <div className="buttons">
@@ -103,20 +73,6 @@ class OrderItem extends React.Component {
           )
         }
     }
-
-    getCloseButton() {
-      if(!this.props.item.isCompleted){
-        return(
-          <>
-          <div className="buttons">
-            <div className="button">
-            <button onClick={this.setCompleted}><span >🤪 </span>Оплатити</button>
-            </div>
-          </div>       
-          </>
-        )
-      }
-  }
 
    getDate(){
       let thisDate = new Date();
@@ -134,13 +90,13 @@ class OrderItem extends React.Component {
       if(token){
         const config = {
             headers: {
-               "Authorization" : token.tokenType+' '+token.accessToken,
+               "Authorization" : 'Bearer '+token,
             },  
         }
         axios
         .get(url, config)
         .then((res) => {
-          this.setState({ email : res.data.userId, name : res.data.name});
+          this.setState({ date: res.data.date, user : res.data.user, product : res.data.product});
         })
         .catch(err => this.setState({ message :  err.response.message}));
       }
@@ -149,19 +105,21 @@ class OrderItem extends React.Component {
     {
         return (
             <article className="col1 flex column">
-                <Link to={"/products/"+this.props.item.id}>
+                <Link to={"/products/"+this.props.item.product.id}>
                     <div className="image">
-                        <img src={'http://localhost:8080/products/images/'+this.props.item.product.id} alt={this.props.title}></img>
-                    </div>
-                    <h3>{this.props.title}</h3>
-                </Link>
+                        {/* <img src={'http://localhost:8080/products/images/'+this.props.item.product.id} alt={this.props.title}></img> */}
+                    
+                <h3>{this.props.title}</h3>
                 <i>{this.props.description}</i>
                 <b>{this.props.cost}</b>
-                <i>{this.getDate()}</i>
-                <i>{this.state.name+' '+this.state.phone}</i>
+                <i>{this.state.date}</i>
+                </div>
+                    
+                </Link>
+                <i>{this.state.user.name+' '+this.state.user.email}</i>
                 <br></br>
+                {this.getAddRespond()}
                 {this.getDeleteButton()}
-                {this.getCloseButton()}
                 <div className="button">
                 </div>
             </article>

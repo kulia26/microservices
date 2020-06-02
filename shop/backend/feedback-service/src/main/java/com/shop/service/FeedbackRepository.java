@@ -15,4 +15,7 @@ public interface FeedbackRepository extends CrudRepository<Feedback, Integer> {
     @Modifying
     @Query("DELETE FROM Feedback u WHERE u.productId = ?1")
     void deleteByProductId(Integer id);
+
+    @Query("SELECT u FROM Feedback u WHERE u.productId = ?1")
+    Iterable<Feedback> getByProductId(Integer id);
 }
