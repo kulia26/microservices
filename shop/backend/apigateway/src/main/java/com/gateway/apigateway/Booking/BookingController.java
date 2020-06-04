@@ -1,6 +1,8 @@
 package com.gateway.apigateway.Booking;
 
 import com.gateway.apigateway.CustomException;
+import com.gateway.apigateway.Product.Product;
+import com.gateway.apigateway.User.User;
 import com.gateway.apigateway.Product.ProductClient;
 import com.gateway.apigateway.User.UserClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +27,11 @@ public class BookingController {
                                      @RequestHeader(value = "Authorization") String token) throws CustomException  {
         userClient.isUser(token);
         Booking b = client.add(booking);
+
         b.setProduct(productClient.getById(b.getProductId()));
         b.setUser(userClient.getById(b.getUserId()));
-        return b;
+
+        return  b;
     }
 
     @RequestMapping(path="", method = RequestMethod.GET)
@@ -35,8 +39,21 @@ public class BookingController {
         userClient.isAdmin(token);
         Iterable<Booking> bookings = client.getAll();
         for(Booking b: bookings) {
-            b.setProduct(productClient.getById(b.getProductId()));
-            b.setUser(userClient.getById(b.getUserId()));
+            Product product = null;
+            try{
+                product = productClient.getById(b.getProductId());
+            }catch(Exception e){
+
+            }
+            User user = null;
+            try{
+                user = userClient.getById(b.getUserId());
+            }catch(Exception e){
+                
+            }
+            
+            b.setProduct(product);
+            b.setUser(user);
         }
         return bookings;
     }
@@ -44,8 +61,22 @@ public class BookingController {
     @RequestMapping(path="/{id}", method = RequestMethod.GET)
     public @ResponseBody Booking getById(@PathVariable int id) throws CustomException {
         Booking booking = client.getById(id);
-        booking.setProduct(productClient.getById(booking.getProductId()));
-        booking.setUser(userClient.getById(booking.getUserId()));
+
+        Product product = null;
+            try{
+                product = productClient.getById(booking.getProductId());
+            }catch(Exception e){
+
+            }
+            User user= null;
+            try{
+                user = userClient.getById(booking.getUserId());
+            }catch(Exception e){
+                
+            }
+
+        booking.setProduct(product);
+        booking.setUser(user);
         return booking;
     };
 
@@ -55,8 +86,21 @@ public class BookingController {
         userClient.isUser(token);
         Iterable<Booking> bookings = client.getUsersOrders(id);
         for(Booking b: bookings) {
-            b.setProduct(productClient.getById(b.getProductId()));
-            b.setUser(userClient.getById(b.getUserId()));
+            Product product= null;
+            try{
+                product = productClient.getById(b.getProductId());
+            }catch(Exception e){
+
+            }
+            User user= null;
+            try{
+                user = userClient.getById(b.getUserId());
+            }catch(Exception e){
+                
+            }
+            
+            b.setProduct(product);
+            b.setUser(user);
         }
         return bookings;
     }

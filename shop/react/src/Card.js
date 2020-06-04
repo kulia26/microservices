@@ -116,7 +116,7 @@ class Card extends React.Component {
             <article className="col1 flex column">
                 <Link to={"/products/"+this.props.item.id}>
                     <div className="image">
-                        <img src={`./assets/${this.props.item.type}.png`} alt={this.props.title}></img>
+                        <img src={`../assets/${this.props.item.type}.png`} alt={this.props.title}></img>
                     
                     <h3>{this.props.title}</h3>
                     </div>
